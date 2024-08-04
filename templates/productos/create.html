@@ -1,0 +1,41 @@
+{% extends 'layout/base.html' %}
+
+{% block 'title' %}Añadir producto{% endblock %}
+
+{% block 'styles' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}?v=2">
+{% endblock %}
+
+{% block 'content' %}
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <span class="aux-btn aux-btns-forms"><a href="{% url 'productos' %}">Ver todos los productos</a>
+        <a href="{% url 'productos' %}">Añadir producto</a>
+        <a href="{% url 'productos' %}">regresar</a>
+    </span>
+
+    <form action="{% url 'producto_create' %}" method="POST">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+
+        <div class="btn-wrapper">
+            <input type="submit" value="Guardar cambios" class="btn-send">
+        </div>
+        
+    </form>
+        
+{% endblock %}
+            
+   
+
+

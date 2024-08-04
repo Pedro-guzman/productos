@@ -1,0 +1,14 @@
+{% load static %}
+<nav>
+
+    <div class="logo">
+        <a href="{% url 'index' %}"><img src="{% static 'img/imagen-principal.jpeg' %}" alt="Logo"></a>
+    </div>
+
+    <ul>
+        <li><a href="{% url 'index' %}">Inicio</a></li>
+        <li><a href="{% url 'productos' %}">Productos</a></li>
+        <li><a href="{% url 'scan_barcode' %}">Scanner</a></li>
+       
+    </ul>
+</nav>

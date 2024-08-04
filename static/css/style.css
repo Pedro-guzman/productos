@@ -1,0 +1,296 @@
+:root {
+    --color-primary: #01304d; 
+    --color-secondary: rgb(234, 120, 32); 
+    --color-text: #666; 
+    --color-btn: rgb(0, 136, 255);
+    --color-btn-alert: rgb(214, 57, 9);
+    --font-main: 'Arial', sans-serif;
+    --font-text: 'Verdana', sans-serif;
+}
+
+/* Main settings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-text);
+    color: var(--color-text);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-main);
+}
+
+/* layout settings */
+nav {
+    display: flex;
+    width: 100%;
+    height: 80px;
+    background-color: var(--color-primary);
+    justify-content: center;
+    align-items: center;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    width: 90vw;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    text-transform: uppercase;
+    font-family: var(--font-main);
+    padding: 10px;
+}
+
+nav ul li a:hover {
+    color: var(--color-secondary);
+    text-decoration: underline;
+    text-underline-offset: 7px;
+}
+
+main {
+    display: flex;
+    height: 75vh;
+    width: 100vw;
+    margin: 50px;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+}
+
+footer {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--color-primary);
+}
+
+footer ul {
+    height: 100%;
+    list-style-type: none;
+}
+
+footer ul li {
+    padding: 10px;
+}
+
+footer ul li a {
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+}
+
+footer ul li a:hover {
+    text-decoration: underline;
+    color: var(--color-secondary);
+    text-underline-offset: 7px;
+    
+}
+/* Estios del logo */
+.logo {
+    width: auto;
+    display: inline-block;
+    margin-left: 20px;
+} 
+
+.logo img {
+    padding: 15px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-text);
+    border-radius: 7px;
+    width: 50%;
+    list-style-type: none;
+}
+
+.list li {
+    padding: 15px;
+    border-bottom: 1px solid var(--color-text);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Estilos de barra de busqueda */
+.search {
+    width: 50%;
+    margin: 20px;
+}
+
+.search-bar {
+    padding: 5px;
+    width: 80%;
+}  
+
+.search-btn {
+    width: 19%;
+    background-color: var(--color-btn);
+    color: white;
+    outline: none;
+    border: 0;
+    box-shadow: 0;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 3px;
+    border: 2px solid var(--color-btn);
+}
+
+.search-btn:hover {
+    background-color: white;
+    color: var(--color-text);
+    border-radius: 3px;
+}
+
+.aux-btn {
+    width: 50%;
+    display: flex;
+    justify-content: flex-start;
+    margin: 10px;
+}
+
+.aux-btn a {
+    padding: 10px;
+    text-decoration: none;
+}
+
+.aux-btn a:hover {
+    text-decoration: underline;
+    text-underline-offset: 7px;
+}
+
+/* Estilos de botones ver, editar, borrar */
+.btn {
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    margin: 3px;
+}
+
+.btn-detail {
+    background-color: var(--color-secondary);
+    color: white;
+    border-radius: 2px;
+    padding: 5px 15px;
+
+} 
+
+.btn-edit {
+    background-color: var(--color-btn);
+    color: white;
+    border-radius: 2px;
+    padding: 5px 15px;
+} 
+
+.btn-delete {
+    background-color: var(--color-btn-alert);
+    color: white;
+    border-radius: 2px;
+    padding: 5px 15px;
+}
+
+.btn-detail:hover {
+    background-color:rgb(234, 109, 13);
+}
+.btn-edit:hover {
+    background-color:  rgb(3, 122, 226);
+}
+.btn-delete:hover {
+    background-color: rgb(186, 45, 2);
+}
+
+/* Estilos de mensaje de exito */
+.success {
+    width: 100%;
+    padding: 10px;
+    background-color: rgb(99, 162, 4);
+    color: white;
+    border-radius: 5px;
+
+}
+
+/* Estilos del scanner */
+.scanner {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.btn-scan {
+    color: white;
+    background-color: var(--color-btn);
+    margin: 20px;
+    justify-content: flex-start;
+    border: none;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.btn-scan:hover {
+    background-color: rgb(6, 104, 189);
+}
+
+.btn-barras {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Media Queries para Responsividad */
+/* Ajustes para pantallas pequeñas (móviles) */
+@media (max-width: 600px) {
+    nav ul {
+        flex-direction: column;
+    }
+
+    .list {
+        width: 90%;
+    }
+
+    .search {
+        width: 90%;
+    }
+
+    .search-bar {
+        width: 70%;
+    }
+
+    .search-btn {
+        width: 29%;
+    }
+
+    .aux-btn {
+        width: 90%;
+        justify-content: center;
+    }
+}
+
+/* Ajustes para pantallas medianas (tabletas) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .list {
+        width: 70%;
+    }
+
+    .search {
+        width: 70%;
+    }
+
+    .aux-btn {
+        width: 70%;
+    }
+}

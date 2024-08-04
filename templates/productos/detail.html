@@ -1,0 +1,32 @@
+{% extends 'layout/base.html' %}
+
+{% block 'title' %}Productos{{ producto.producto }}{% endblock %}
+
+{% block 'content' %}
+
+    <form  class="search" action="{% url 'productos' %}">
+        <input type="text" name="search" class="search-bar" placeholder="Buscar producto">
+        <input type="submit" value="Buscar" class="search-btn">
+    </form>
+
+    <span class="aux-btn"><a href="{% url 'productos' %}">Ver todos los productos</a>
+        <a href="{% url 'producto_create' %}">Añadir producto</a>
+        <a href="{% url 'productos' %}">regresar</a>
+    </span>
+
+    <ul class="list">
+      
+        <li><b>Nombre del producto</b>{{ producto.producto }}</li>
+        <li><b>Costo $</b>{{ producto.costo }}</li>
+        <li><b>Venta $</b>{{ producto.venta }}</li>
+        <li><b>Cantidad</b>{{ producto.cantidad }}</li>
+        <li><b>Código de barras</b>{{ producto.codigo_barras }}</li>
+      
+   
+    </ul>
+    
+{% endblock %}
+            
+
+            
+          
