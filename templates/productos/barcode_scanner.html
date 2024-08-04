@@ -1,76 +1,82 @@
-{% extends 'layout/base.html' %}  {# Extiende de una plantilla base llamada 'base.html' en el directorio 'layout' #}
+{% extends 'layout/base.html' %}
 
-{% block 'title' %}scanner{% endblock %}  {# Define el bloque 'title' y lo llena con el texto 'scanner' #}
+{% block 'title' %}scanner{% endblock %}
 
-{% block 'content' %}  {# Inicia el bloque de contenido principal de la página #}
+{% block 'content' %}
 <div>
-    <h1>Escáner de Códigos de Barras</h1>  {# Encabezado principal de la página #}
-   
-    <span class="aux-btn aux-btns-forms btn-barras">  {# Contenedor para los botones auxiliares #}
-        <a href="{% url 'productos' %}">Ver todos los productos</a>  {# Enlace a la página que muestra todos los productos #}
-        <a href="{% url 'producto_create' %}">Añadir producto</a>  {# Enlace a la página para añadir un nuevo producto #}
-        <a href="{% url 'productos' %}">regresar</a>  {# Enlace para regresar a la página de productos #}
+    <h1>Escáner de Códigos de Barras</h1>
+    <span class="aux-btn aux-btns-forms btn-barras">
+        <a href="{% url 'productos' %}">Ver todos los productos</a>
+        <a href="{% url 'producto_create' %}">Añadir producto</a>
+        <a href="{% url 'productos' %}">regresar</a>
     </span>
 </div>
-    
+
 <div class="scanner">
-    <video id="video" width="300" height="200" autoplay></video>  {# Elemento de video para mostrar el flujo de la cámara en vivo #}
-    <button id="snap" class="btn-scan">Escanear</button>  {# Botón para iniciar el escaneo #}
-    <canvas id="canvas" width="300" height="200" style="display:none;"></canvas>  {# Elemento canvas oculto para capturar la imagen del video #}
+    <video id="video" width="600" height="400" autoplay></video>
+    <canvas id="canvas" width="600" height="400" style="display:none;"></canvas>
 </div>
 
 <div id="product-info">
-    <h2>Información del Producto</h2>  {# Encabezado para la sección de información del producto #}
-    <p id="product-name">Nombre: </p>  {# Parrafo para mostrar el nombre del producto #}
-    <p id="product-venta">Venta: </p>  {# Parrafo para mostrar la venta del producto #}
-    <p id="product-cantidad">Cantidad: </p>  {# Parrafo para mostrar la cantidad del producto #}
+    <h2>Información del Producto</h2>
+    <p id="product-name">Nombre: </p>
+    <p id="product-venta">Venta: </p>
+    <p id="product-cantidad">Cantidad: </p>
 </div>
 {% endblock %}
 
-{% block 'scripts' %}  {# Inicia el bloque para los scripts de la página #}
+{% block 'scripts' %}
 <script>
-    const video = document.getElementById('video');  {# Selecciona el elemento de video #}
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    const beep = new Audio('path/to/beep/sound.mp3');  // Ruta al archivo de sonido para el pitido
+
+    let lastScannedCode = '';  // Almacena el último código escaneado
 
     // Verifica si el navegador soporta la API de media devices y obtiene el flujo de video de la cámara
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-            video.srcObject = stream;  {# Asigna el flujo de video a la fuente del elemento de video #}
-            video.play();  {# Reproduce el video #}
+            video.srcObject = stream;
+            video.play();
+            scanCode();  // Inicia el escaneo automático
         });
     }
 
-    // Agrega un evento al botón de escanear para capturar una imagen del video cuando se hace clic
-    document.getElementById("snap").addEventListener("click", function() {
-        const canvas = document.getElementById("canvas");  {# Selecciona el elemento canvas #}
-        const context = canvas.getContext("2d");  {# Obtiene el contexto 2D del canvas para dibujar la imagen #}
-        context.drawImage(video, 0, 0, 600, 400);  {# Dibuja la imagen del video en el canvas #}
+    function scanCode() {
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const dataURL = canvas.toDataURL('image/png');
 
-        const dataURL = canvas.toDataURL("image/png");  {# Convierte la imagen del canvas a una URL en formato de imagen PNG #}
-        console.log("Imagen capturada, enviando al servidor...");
-
-        // Envía la imagen capturada al servidor usando fetch
         fetch('/productos/scan/', {
-            method: 'POST',  {# Método de la petición #}
+            method: 'POST',
             headers: {
-                'Content-Type': 'application/json',  {# Especifica el tipo de contenido como JSON #}
-                'X-CSRFToken': '{{ csrf_token }}'  {# Incluye el token CSRF para seguridad #}
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
             },
-            body: JSON.stringify({ image: dataURL })  {# Convierte la imagen a una cadena JSON y la envía en el cuerpo de la petición #}
+            body: JSON.stringify({ image: dataURL })
         })
-        .then(response => response.json())  {# Procesa la respuesta del servidor y la convierte a JSON #}
+        .then(response => response.json())
         .then(data => {
-            console.log("Respuesta del servidor:", data);
-            if (data.product_info) {  {# Si la respuesta contiene información del producto #}
-                document.getElementById('product-name').innerText = `Nombre: ${data.product_info.nombre}`;  {# Actualiza el texto con el nombre del producto #}
-                document.getElementById('product-venta').innerText = `Venta: ${data.product_info.venta}`;  {# Actualiza el texto con la venta del producto #}
-                document.getElementById('product-cantidad').innerText = `Cantidad: ${data.product_info.cantidad}`;  {# Actualiza el texto con la cantidad del producto #}
+            console.log("Datos recibidos:", data);
+            if (data.product_info) {
+                console.log("Código del producto escaneado:", data.product_info.codigo);
+                if (data.product_info.codigo !== lastScannedCode) {
+                    lastScannedCode = data.product_info.codigo;  // Actualiza el último código escaneado
+                    document.getElementById('product-name').innerText = `Nombre: ${data.product_info.nombre}`;
+                    document.getElementById('product-venta').innerText = `Venta: ${data.product_info.venta}`;
+                    document.getElementById('product-cantidad').innerText = `Cantidad: ${data.product_info.cantidad}`;
+                    beep.play();  // Reproduce el sonido del pitido
+                } else {
+                    console.log("El código escaneado es el mismo que el último. No se actualizará la información.");
+                }
             } else {
-                document.getElementById('product-name').innerText = 'Nombre: No encontrado';  {# Muestra mensaje de no encontrado si no hay información del producto #}
-                document.getElementById('product-venta').innerText = 'Venta: No encontrado';  {# Muestra mensaje de no encontrado si no hay información del producto #}
-                document.getElementById('product-cantidad').innerText = 'Cantidad: No encontrado';  {# Muestra mensaje de no encontrado si no hay información del producto #}
+                console.log("No se encontró información del producto.");
             }
         })
-        .catch(error => console.error('Error:', error));  {# Captura y muestra errores en la consola #}
-    });
+        .catch(error => console.error('Error:', error));
+
+        // Llama a scanCode nuevamente después de un breve retraso
+        setTimeout(scanCode, 1000);  // Escanea cada 1 segundo (1000 ms)
+    }
 </script>
 {% endblock %}
