@@ -1,5 +1,5 @@
 :root {
-    --color-primary: #01304d; 
+    --color-primary: #19233e; 
     --color-secondary: rgb(234, 120, 32); 
     --color-text: #666; 
     --color-btn: rgb(0, 136, 255);
@@ -35,7 +35,7 @@ nav ul {
     list-style: none;
     display: flex;
     width: 90vw;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     flex-wrap: wrap;
 }
@@ -52,13 +52,15 @@ nav ul li a:hover {
     color: var(--color-secondary);
     text-decoration: underline;
     text-underline-offset: 7px;
+    background-color: #014b78;
+    border-radius: 3px;
 }
 
 main {
     display: flex;
     height: 75vh;
     width: 100vw;
-    margin: 50px;
+   
     justify-content: flex-start;
     align-items: center;
     flex-direction: column;
@@ -272,6 +274,9 @@ footer ul li a:hover {
 .cards {
     display: flex;
     justify-content: space-between;
+    margin-left: auto;
+    margin-right: auto;
+
 }
 
 .card {
